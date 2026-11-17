@@ -1,26 +1,38 @@
-# Python Ethical Hacking – Lab 02
-## SSH Brute Forcer
+# TP 5 - MikroTik CHR v7 : API RESTful
 
-### Description
-This project is part of the Python Ethical Hacking course.
-The goal is to create a multithreaded SSH brute force tool using Python.
+Automatisation de la configuration d'un routeur MikroTik CHR avec Python.
 
-The script attempts to login to an SSH server using a password wordlist.
+## Prerequis
 
- For educational use only in a controlled lab environment.
-
----
-
-### 🛠 Technologies
 - Python 3
-- Paramiko
-- Multithreading
+- VM MikroTik CHR v7 accessible (ici 192.168.56.10)
+- pip install requests python-dotenv
 
----
+## Configuration
 
-### Installation
+Creer un fichier `.env` a la racine (jamais versionne, voir `.gitignore`) :
 
-```bash
-git clone https://github.com/yourname/ssh-bruteforce-lab.git
-cd ssh-bruteforce-lab
-pip install -r requirements.txt
+    DEVICE_HOST=192.168.56.10
+    DEVICE_USER=api-user
+    DEVICE_PASSWORD=motdepasse
+
+Cote routeur :
+
+    /ip service enable www-ssl
+    /user add name=api-user password=... group=full
+
+## Scriptss
+
+- `crud_demo.py` : GET, PUT (creation), PATCH puis DELETE d'une adresse IP sur ether2.
+- `configure_router.py` : cree les routes statiques de la liste ROUTES si elles n'existent pas deja (idempotent).
+
+Lancement :
+
+    py crud_demo.py
+    py configure_router.py
+    py configure_router.py   (2e lancement : uniquement des [SKIP])
+
+## Remarques
+
+- Dans l'API REST de RouterOS, la creation se fait avec PUT (et non POST).
+- verify=False car le certificat du routeur est auto-signe (laboratoire uniquement).
